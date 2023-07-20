@@ -1,14 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { typeDefs } from "./schemas";
-import { addMocksToSchema } from "@graphql-tools/mock";
-import { makeExecutableSchema } from "@graphql-tools/schema";
+import typeDefs from "./schemas/index";
 
-export async function startApolloServer() {
+const startApolloServer = async () => {
   const server = new ApolloServer({ typeDefs });
   const { url } = await startStandaloneServer(server);
   console.log(`
     🚀  Server is running!
     📭  Query at ${url}
   `);
-}
+};
+export default startApolloServer;
