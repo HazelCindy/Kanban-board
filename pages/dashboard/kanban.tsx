@@ -5,8 +5,28 @@ import Box from "@mui/material/Box";
 import BreadCrumb from "../../src/components/breadcrumb";
 import Grid from "@mui/material/Unstable_Grid2";
 import Columns from "../../src/components/column";
+import { gql, useQuery } from "@apollo/client";
 
-export default function Kanban({ boards }: any) {
+const BOARD = gql`
+  query ExampleQuery {
+    getBoards {
+      id
+      cards {
+        id
+        Title
+      }
+      Title
+    }
+  }
+`;
+
+export default function Kanban() {
+  const { loading, error, data } = useQuery(BOARD);
+
+  if (loading) return "Loading...";
+
+  if (error) return `Error! ${error.message}`;
+
   return (
     <>
       <Head>
@@ -30,11 +50,14 @@ export default function Kanban({ boards }: any) {
           }}
         >
           <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {boards.map((board: any) => (
+            {data?.getBoards?.map((board: any) => (
               <Grid xs={6} md={4} key={board?.id}>
                 <Columns board={board} />
               </Grid>
             ))}
+            <Grid xs={6} md={4} key="*">
+              <Columns />
+            </Grid>
           </Grid>
         </Box>
       </Box>
