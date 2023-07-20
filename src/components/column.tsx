@@ -6,7 +6,14 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 type ColumnsProps = {
-  board: any;
+  board?: {
+    id: number;
+    cards: {
+      id: number;
+      Title: string;
+    };
+    Title: string;
+  };
 };
 
 const Columns: React.FC<ColumnsProps> = ({ board }) => {
