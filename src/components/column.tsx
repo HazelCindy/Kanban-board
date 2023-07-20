@@ -1,87 +1,44 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Cards from "./card";
+import Task, { TaskProps } from "./task";
 
 type ColumnsProps = {
-  board?: {
+  column?: {
     id: number;
-    cards: {
-      id: number;
-      Title: string;
-    };
-    Title: string;
+    name: string;
+    tasks: TaskProps[];
   };
 };
 
-const Columns: React.FC<ColumnsProps> = ({ board }) => {
-  console.log(board);
-  const [cardName, setCardName] = React.useState("");
-  const [addCard, setAddCard] = React.useState(false);
-  const [error, setError] = React.useState(false);
+const Columns: React.FC<ColumnsProps> = ({ column }) => {
+  const [tasks] = React.useState([]);
 
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
-      {addCard && (
-        <Box
-          sx={{
-            "& .MuiTextField-root": { m: "10px", width: "90%" },
-          }}
-          component="form"
-        >
-          <TextField
-            id={error ? "outlined-error-helper-text" : "outlined-required"}
-            label="Name"
-            error={error}
-            helperText={error ? "Please add title" : ""}
-            value={cardName}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setCardName(e.target.value);
-              setError(false);
-            }}
-          />
-        </Box>
-      )}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95%",
+          height: "40px",
+          alignItems: "center",
+          mx: "10px",
+        }}
+      >
+        <Typography>{column?.name}</Typography>
+        <MoreHorizIcon />
+      </Box>
+      <>
+        {column?.tasks?.map((task) => (
+          <Task description={task?.description} id={task?.id} key={task?.id} />
+        ))}
+      </>
 
-      {/* <Cards /> */}
-      <CardActions>
-        {addCard ? (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Button onClick={() => setAddCard(false)}>Cancel</Button>
-            <Button
-              sx={{
-                backgroundColor: "rgb(100, 112, 205)",
-                color: "white",
-                width: "sm",
-              }}
-              onClick={() => {
-                cardName === "" ? setError(true) : setAddCard(false);
-              }}
-            >
-              Add
-            </Button>
-          </Box>
-        ) : (
-          <Button
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifySelf: "center",
-            }}
-            onClick={() => setAddCard(true)}
-          >
-            Add Column
-          </Button>
-        )}
-      </CardActions>
+      <Cards />
     </Card>
   );
 };
