@@ -6,17 +6,15 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Cards from "./card";
 import Task, { TaskProps } from "./task";
 
-type ColumnsProps = {
+interface ColumnsProps {
   column?: {
     id: number;
     name: string;
     tasks: TaskProps[];
   };
-};
+}
 
-const Columns: React.FC<ColumnsProps> = ({ column }) => {
-  const [tasks] = React.useState([]);
-
+function Columns({ column }: ColumnsProps) {
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
       <Box
@@ -32,14 +30,12 @@ const Columns: React.FC<ColumnsProps> = ({ column }) => {
         <Typography>{column?.name}</Typography>
         <MoreHorizIcon />
       </Box>
-      <>
-        {column?.tasks?.map((task) => (
-          <Task description={task?.description} id={task?.id} key={task?.id} />
-        ))}
-      </>
+      {column?.tasks?.map((task) => (
+        <Task description={task?.description} key={task?.description} />
+      ))}
 
       <Cards />
     </Card>
   );
-};
+}
 export default Columns;

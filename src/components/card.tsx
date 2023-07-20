@@ -9,7 +9,7 @@ type CardsProps = {
   column?: boolean;
 };
 
-const Cards: React.FC<CardsProps> = ({ column }) => {
+function Cards({ column }: CardsProps) {
   const [cardName, setCardName] = React.useState("");
   const [addCard, setAddCard] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -53,9 +53,9 @@ const Cards: React.FC<CardsProps> = ({ column }) => {
                 color: "white",
                 width: "sm",
               }}
-              onClick={() => {
-                cardName === "" ? setError(true) : setAddCard(false);
-              }}
+              onClick={() =>
+                cardName === "" ? setError(true) : setAddCard(false)
+              }
             >
               Add
             </Button>
@@ -77,5 +77,5 @@ const Cards: React.FC<CardsProps> = ({ column }) => {
       </CardActions>
     </Card>
   );
-};
+}
 export default Cards;

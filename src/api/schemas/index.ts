@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const typeDefs = gql`
+const typeDefs = gql`
   type Card {
     id: ID
     Title: String!
@@ -16,3 +16,4 @@ export const typeDefs = gql`
     getBoard(name: String!): Board!
   }
 `;
+export default typeDefs;

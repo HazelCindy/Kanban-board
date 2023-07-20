@@ -2,12 +2,12 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
-export type TaskProps = {
-  id: number;
+export interface TaskProps {
+  // id: number;
   description: string;
-};
+}
 
-const Task: React.FC<TaskProps> = ({ id, description }) => {
+function Task({ description }: TaskProps) {
   const [, setTaskName] = React.useState("");
   const [error, setError] = React.useState(false);
 
@@ -31,5 +31,5 @@ const Task: React.FC<TaskProps> = ({ id, description }) => {
       />
     </Box>
   );
-};
+}
 export default Task;

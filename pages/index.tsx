@@ -1,11 +1,11 @@
 import * as React from "react";
 import Head from "next/head";
-import { ApolloProvider, gql } from "@apollo/client";
-import { startApolloServer } from "../src/api/graphql";
+import { ApolloProvider } from "@apollo/client";
+import startApolloServer from "../src/api/graphql";
 import Kanban from "./dashboard/kanban";
-import { client } from "../src/api/hello";
+import client from "../src/api/hello";
 
-export default function Home({ boards }: any) {
+export default function Home() {
   return (
     <ApolloProvider client={client}>
       <Head>

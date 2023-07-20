@@ -1,12 +1,12 @@
 import * as React from "react";
 import Head from "next/head";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import BreadCrumb from "../../src/components/breadcrumb";
-import Grid from "@mui/material/Unstable_Grid2";
-import Columns from "../../src/components/column";
 import { gql, useQuery } from "@apollo/client";
-import Cards from "@/src/components/card";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Unstable_Grid2";
+import Cards from "../../src/components/card";
+import BreadCrumb from "../../src/components/breadcrumb";
+import Columns from "../../src/components/column";
 
 const BOARD = gql`
   query ExampleQuery {
