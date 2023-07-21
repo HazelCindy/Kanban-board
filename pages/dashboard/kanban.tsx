@@ -8,8 +8,8 @@ import Cards from "../../src/components/card";
 import BreadCrumb from "../../src/components/breadcrumb";
 import Columns from "../../src/components/column";
 
-const BOARD = gql`
-  query ExampleQuery {
+export const BOARD = gql`
+  query {
     Columns {
       id
       Title
@@ -24,7 +24,6 @@ export default function Kanban() {
   if (loading) return "Loading...";
 
   if (error) return `Error! ${error.message}`;
-  console.log(data.columns);
 
   return (
     <>
@@ -48,15 +47,15 @@ export default function Kanban() {
             mt: 2,
           }}
         >
-          <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid container columnSpacing={{ md: 3 }}>
             {data?.Columns?.map((board: any) => (
-              <Grid xs={6} md={3} key={board?.id}>
+              <Grid md={2} key={board?.id}>
                 <Columns column={board} />
               </Grid>
             ))}
             {/* Display the add column only if there less than 5 columns present */}
             {(!data?.Columns || data?.Columns?.length < 5) && (
-              <Grid xs={6} md={3} key="*">
+              <Grid md={2} key="*">
                 <Cards column />
               </Grid>
             )}
