@@ -1,19 +1,39 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
-  type Card {
+  "Type for a task on the Column"
+  type Task {
     id: ID
     Title: String!
+    description: String
   }
-  type Board {
+  "Column that is displayed on the column"
+  type Column {
     id: ID
     Title: String
-    cards: [Card]
+    TaskId: [ID]
   }
 
   type Query {
-    getBoards: [Board!]
-    getBoard(name: String!): Board!
+    "get all the Columns"
+    Columns: [Column!]
+    "get a single Column"
+    Column(id: ID!): Column!
+    "get all tasks"
+    tasks: [Task!]
+    "get single task"
+    task(id: ID!): Task!
+  }
+
+  type Mutation {
+    addColumn(user: ID!, name: String): AddColumnResponse
+  }
+
+  type AddColumnResponse {
+    code: Int!
+    success: Boolean
+    message: String!
+    Column: Column
   }
 `;
 export default typeDefs;

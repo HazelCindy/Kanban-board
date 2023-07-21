@@ -10,13 +10,10 @@ import Columns from "../../src/components/column";
 
 const BOARD = gql`
   query ExampleQuery {
-    getBoards {
+    Columns {
       id
-      cards {
-        id
-        Title
-      }
       Title
+      TaskId
     }
   }
 `;
@@ -27,6 +24,7 @@ export default function Kanban() {
   if (loading) return "Loading...";
 
   if (error) return `Error! ${error.message}`;
+  console.log(data.columns);
 
   return (
     <>
@@ -51,14 +49,17 @@ export default function Kanban() {
           }}
         >
           <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {data?.getBoards?.map((board: any) => (
-              <Grid xs={6} md={4} key={board?.id}>
+            {data?.Columns?.map((board: any) => (
+              <Grid xs={6} md={3} key={board?.id}>
                 <Columns column={board} />
               </Grid>
             ))}
-            <Grid xs={6} md={4} key="*">
-              <Cards column />
-            </Grid>
+            {/* Display the add column only if there less than 5 columns present */}
+            {(!data?.Columns || data?.Columns?.length < 5) && (
+              <Grid xs={6} md={3} key="*">
+                <Cards column />
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Box>
