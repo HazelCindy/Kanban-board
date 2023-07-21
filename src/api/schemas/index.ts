@@ -3,20 +3,20 @@ import gql from "graphql-tag";
 const typeDefs = gql`
   "Type for a task on the Column"
   type Task {
-    id: ID
+    id: ID!
     Title: String!
-    description: String
+    description: String!
   }
   "Column that is displayed on the column"
   type Column {
-    id: ID
+    id: ID!
     Title: String
     TaskId: [ID]
   }
 
   type Query {
     "get all the Columns"
-    Columns: [Column!]
+    Columns: [Column]
     "get a single Column"
     Column(id: ID!): Column!
     "get all tasks"
@@ -26,14 +26,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addColumn(user: ID!, name: String): AddColumnResponse
-  }
-
-  type AddColumnResponse {
-    code: Int!
-    success: Boolean
-    message: String!
-    Column: Column
+    addColumn(Title: String): Column
   }
 `;
 export default typeDefs;
