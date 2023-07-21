@@ -4,6 +4,18 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { gql, useMutation } from "@apollo/client";
+import { BOARD } from "../../pages/dashboard/kanban";
+
+const ADD_COLUMN = gql`
+  mutation addColumn($title: String) {
+    addColumn(Title: $title) {
+      TaskId
+      Title
+      id
+    }
+  }
+`;
 
 type CardsProps = {
   column?: boolean;
@@ -12,7 +24,26 @@ type CardsProps = {
 function Cards({ column }: CardsProps) {
   const [cardName, setCardName] = React.useState("");
   const [addCard, setAddCard] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [errorMessage, setError] = React.useState(false);
+  const [addColumn, { data, loading, error }] = useMutation(ADD_COLUMN, {
+    update(cache, { data: { addColumn } }) {
+      const existingColumns: any = cache.readQuery({ query: BOARD });
+      const updatedColumns = existingColumns.entries.concat([addColumn]);
+
+      cache.writeQuery({
+        query: BOARD,
+        data: { Columns: updatedColumns },
+      });
+    },
+  });
+
+  const handleAddColumn = (id: number, name: string) => {
+    if (name !== "") {
+      addColumn({
+        variables: { title: name },
+      });
+    }
+  };
 
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
@@ -26,7 +57,7 @@ function Cards({ column }: CardsProps) {
           <TextField
             id={error ? "outlined-error-helper-text" : "outlined-required"}
             label={column ? "Name" : "Title"}
-            error={error}
+            error={errorMessage}
             helperText={error ? "Please add title" : ""}
             value={cardName}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,9 +84,10 @@ function Cards({ column }: CardsProps) {
                 color: "white",
                 width: "sm",
               }}
-              onClick={() =>
-                cardName === "" ? setError(true) : setAddCard(false)
-              }
+              onClick={() => {
+                column ? handleAddColumn(1, cardName) : "";
+                cardName !== "" && setAddCard(false);
+              }}
             >
               Add
             </Button>
