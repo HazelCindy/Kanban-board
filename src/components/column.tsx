@@ -9,7 +9,7 @@ import Task, { TaskProps } from "./task";
 interface ColumnsProps {
   column?: {
     id: number;
-    name: string;
+    Title: string;
     tasks: TaskProps[];
   };
 }
@@ -27,7 +27,7 @@ function Columns({ column }: ColumnsProps) {
           mx: "10px",
         }}
       >
-        <Typography>{column?.name}</Typography>
+        <Typography>{column?.Title}</Typography>
         <MoreHorizIcon />
       </Box>
       {column?.tasks?.map((task) => (
