@@ -4,7 +4,7 @@ const typeDefs = gql`
   "Type for a task on the Column"
   type Task {
     id: ID!
-    Title: String!
+    title: String!
     description: String!
   }
   "Column that is displayed on the column"
@@ -20,12 +20,13 @@ const typeDefs = gql`
     "get a single Column"
     Column(id: ID!): Column!
     "get all tasks"
-    tasks: [Task!]
+    Tasks: [Task!]
     "get single task"
-    task(id: ID!): Task!
+    Task(id: ID!): Task!
   }
 
   type Mutation {
+    "Mutation to add a column to Board"
     addColumn(Title: String): Column
   }
 `;

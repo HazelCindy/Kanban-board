@@ -8,6 +8,7 @@ import Cards from "../../src/components/card";
 import BreadCrumb from "../../src/components/breadcrumb";
 import Columns from "../../src/components/column";
 
+// Query to get the columns
 export const BOARD = gql`
   query {
     Columns {
@@ -48,6 +49,7 @@ export default function Kanban() {
           }}
         >
           <Grid container columnSpacing={{ md: 3 }}>
+            {/* Display columns once added */}
             {data?.Columns?.map((board: any) => (
               <Grid md={2} key={board?.id}>
                 <Columns column={board} />

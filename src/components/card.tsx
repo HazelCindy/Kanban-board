@@ -25,20 +25,11 @@ function Cards({ column }: CardsProps) {
   const [cardName, setCardName] = React.useState("");
   const [addCard, setAddCard] = React.useState(false);
   const [errorMessage, setError] = React.useState(false);
-  const [addColumn, { data, loading, error }] = useMutation(ADD_COLUMN, {
-    update(cache, { data: { addColumn } }) {
-      const existingColumns: any = cache.readQuery({ query: BOARD });
-      const updatedColumns = existingColumns.entries.concat([addColumn]);
-
-      cache.writeQuery({
-        query: BOARD,
-        data: { Columns: updatedColumns },
-      });
-    },
-  });
+  // Mutation to add a new column
+  const [addColumn, { data, loading, error }] = useMutation(ADD_COLUMN);
 
   const handleAddColumn = (id: number, name: string) => {
-    if (name !== "") {
+    if (name !== "" && column) {
       addColumn({
         variables: { title: name },
       });
