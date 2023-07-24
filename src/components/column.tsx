@@ -11,8 +11,8 @@ export const Tasks = gql`
   query {
     Tasks {
       id
-      itle
-      description
+      Description
+      ColumnId
     }
   }
 `;
@@ -20,10 +20,9 @@ export const Tasks = gql`
 export interface ColumnsProps {
   id?: string;
   Title: string;
-  TaskId: string[];
 }
 
-function Columns({ TaskId, Title }: ColumnsProps) {
+function Columns({ id, Title }: ColumnsProps) {
   const [tasks, setTasks] = React.useState<Array<TaskProps>>([]);
   // get tasks in cache
   const { data } = useQuery(Tasks);
@@ -40,13 +39,9 @@ function Columns({ TaskId, Title }: ColumnsProps) {
   React.useEffect(() => {
     if (data?.Tasks) {
       // set the tasks for each indvidual column
-      setTasks(
-        data?.tasks?.filter((task: TaskProps) =>
-          TaskId.includes(task?.id || "0")
-        )
-      );
+      setTasks(data?.Tasks?.filter((task: TaskProps) => task?.ColumnId === id));
     }
-  }, [TaskId, data]);
+  }, [id, data]);
 
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
@@ -86,16 +81,16 @@ function Columns({ TaskId, Title }: ColumnsProps) {
         </Menu>
       </Box>
 
-      {tasks.length === 0 ? (
+      {tasks?.length === 0 ? (
         <Task />
       ) : (
         //   Display task if availabe
         tasks?.map((task) => (
-          <Task description={task?.description} key={task?.id} />
+          <Task Description={task?.Description} key={task?.id} />
         ))
       )}
 
-      <Cards />
+      <Cards columnId={id} />
     </Card>
   );
 }

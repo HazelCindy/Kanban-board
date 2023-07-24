@@ -4,10 +4,11 @@ import Box from "@mui/material/Box";
 
 export interface TaskProps {
   id?: string;
-  description?: string;
+  Description?: string;
+  ColumnId?: string;
 }
 
-function Task({ description }: TaskProps) {
+function Task({ Description }: TaskProps) {
   const [, setTaskName] = React.useState("");
   const [error, setError] = React.useState(false);
 
@@ -24,7 +25,7 @@ function Task({ description }: TaskProps) {
         error={error}
         aria-readonly
         helperText={error ? "Please add title" : ""}
-        value={description}
+        value={Description}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
           setTaskName(e.target.value);
           setError(false);

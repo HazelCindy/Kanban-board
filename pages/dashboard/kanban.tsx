@@ -9,18 +9,18 @@ import BreadCrumb from "../../src/components/breadcrumb";
 import Columns from "../../src/components/column";
 
 // Query to get the columns
-export const BOARD = gql`
+export const COLUMNS = gql`
   query {
     Columns {
       id
       Title
-      TaskId
     }
   }
 `;
 
 export default function Kanban() {
-  const { loading, error, data } = useQuery(BOARD);
+  // get all the columns
+  const { loading, error, data } = useQuery(COLUMNS);
 
   if (loading) return "Loading...";
 
@@ -48,16 +48,20 @@ export default function Kanban() {
             mt: 2,
           }}
         >
-          <Grid container columnSpacing={{ md: 3 }}>
+          <Grid
+            container
+            columnSpacing={{ xs: 1, md: 2, lg: 2 }}
+            rowSpacing={1}
+          >
             {/* Display columns once added */}
             {data?.Columns?.map((board: any) => (
-              <Grid md={2} key={board?.id}>
-                <Columns Title={board?.Title} TaskId={board?.taskId} />
+              <Grid md={2} lg={2.2} key={board?.id}>
+                <Columns Title={board?.Title} id={board?.id} />
               </Grid>
             ))}
             {/* Display the add column only if there less than 5 columns present */}
             {(!data?.Columns || data?.Columns?.length < 5) && (
-              <Grid md={2} key="*">
+              <Grid md={2} lg={2.2} key="*">
                 <Cards column />
               </Grid>
             )}
