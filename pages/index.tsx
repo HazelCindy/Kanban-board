@@ -19,8 +19,8 @@ export default function Home() {
   );
 }
 
-export async function getStaticProps() {
-  // startApolloServer();
+export async function getServerSideProps() {
+  startApolloServer();
 
   return {
     props: { boards: [] },
