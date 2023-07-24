@@ -46,7 +46,7 @@ function Cards({ column, columnId }: CardsProps) {
         });
       } else {
         addTask({
-          variables: { columnId: columnId, description: name },
+          variables: { columnId, description: name },
         });
       }
       setAddCard(false);

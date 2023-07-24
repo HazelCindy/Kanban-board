@@ -1,5 +1,5 @@
-import { ColumnsProps } from "@/src/components/column";
-import { TaskProps } from "@/src/components/task";
+import { ColumnsProps } from "../../components/column";
+import { TaskProps } from "../../components/task";
 
 const Columns: ColumnsProps[] = [];
 const Tasks: TaskProps[] = [];
@@ -27,9 +27,9 @@ const resolvers = {
     },
     updateColumn: (_: any, { id, Title }: ColumnsProps) => {
       // Get the index of column to be updated
-      const updatedColumnIndex: number = Columns.findIndex(
-        (column) => column.id === id
-      );
+      const updatedColumnIndex = Columns.findIndex((column) => {
+        return column.id === id;
+      });
       if (updatedColumnIndex) {
         Columns[updatedColumnIndex].Title = Title;
         return Columns[updatedColumnIndex];
@@ -37,6 +37,7 @@ const resolvers = {
       return null;
     },
     addTask: (_: any, { Description, ColumnId }: TaskProps) => {
+      // addTask to column
       const newTask = {
         id: String(Tasks.length + 1),
         Description,

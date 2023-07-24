@@ -8,7 +8,7 @@ export interface TaskProps {
   ColumnId?: string;
 }
 
-function Task({ Description }: TaskProps) {
+function Task({ Description }: any) {
   const [, setTaskName] = React.useState("");
   const [error, setError] = React.useState(false);
 

@@ -1,11 +1,11 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
+import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Cards from "./card";
 import Task, { TaskProps } from "./task";
-import { gql, useQuery } from "@apollo/client";
 
 export const Tasks = gql`
   query {
@@ -82,7 +82,7 @@ function Columns({ id, Title }: ColumnsProps) {
       </Box>
 
       {tasks?.length === 0 ? (
-        <Task />
+        <Task Description="" />
       ) : (
         //   Display task if availabe
         tasks?.map((task) => (
