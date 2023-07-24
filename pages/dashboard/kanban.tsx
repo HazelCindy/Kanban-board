@@ -8,15 +8,13 @@ import Cards from "../../src/components/card";
 import BreadCrumb from "../../src/components/breadcrumb";
 import Columns from "../../src/components/column";
 
-const BOARD = gql`
-  query ExampleQuery {
-    getBoards {
+// Query to get the columns
+export const BOARD = gql`
+  query {
+    Columns {
       id
-      cards {
-        id
-        Title
-      }
       Title
+      TaskId
     }
   }
 `;
@@ -50,15 +48,19 @@ export default function Kanban() {
             mt: 2,
           }}
         >
-          <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {data?.getBoards?.map((board: any) => (
-              <Grid xs={6} md={4} key={board?.id}>
+          <Grid container columnSpacing={{ md: 3 }}>
+            {/* Display columns once added */}
+            {data?.Columns?.map((board: any) => (
+              <Grid md={2} key={board?.id}>
                 <Columns column={board} />
               </Grid>
             ))}
-            <Grid xs={6} md={4} key="*">
-              <Cards column />
-            </Grid>
+            {/* Display the add column only if there less than 5 columns present */}
+            {(!data?.Columns || data?.Columns?.length < 5) && (
+              <Grid md={2} key="*">
+                <Cards column />
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Box>

@@ -3,8 +3,8 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 export interface TaskProps {
-  // id: number;
-  description: string;
+  id?: number;
+  description?: string;
 }
 
 function Task({ description }: TaskProps) {
@@ -20,8 +20,9 @@ function Task({ description }: TaskProps) {
     >
       <TextField
         id={error ? "outlined-error-helper-text" : "outlined-required"}
-        label="Name"
+        label="Title"
         error={error}
+        aria-readonly
         helperText={error ? "Please add title" : ""}
         value={description}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
