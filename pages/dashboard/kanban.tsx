@@ -52,7 +52,7 @@ export default function Kanban() {
             {/* Display columns once added */}
             {data?.Columns?.map((board: any) => (
               <Grid md={2} key={board?.id}>
-                <Columns column={board} />
+                <Columns Title={board?.Title} TaskId={board?.taskId} />
               </Grid>
             ))}
             {/* Display the add column only if there less than 5 columns present */}

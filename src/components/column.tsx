@@ -17,15 +17,13 @@ export const Tasks = gql`
   }
 `;
 
-interface ColumnsProps {
-  column?: {
-    id: number;
-    Title: string;
-    TaskId: number[];
-  };
+export interface ColumnsProps {
+  id?: string;
+  Title: string;
+  TaskId: string[];
 }
 
-function Columns({ column }: ColumnsProps) {
+function Columns({ TaskId, Title }: ColumnsProps) {
   const [tasks, setTasks] = React.useState<Array<TaskProps>>([]);
   // get tasks in cache
   const { data } = useQuery(Tasks);
@@ -43,12 +41,12 @@ function Columns({ column }: ColumnsProps) {
     if (data?.Tasks) {
       // set the tasks for each indvidual column
       setTasks(
-        data?.tasks?.filter(
-          (task: TaskProps) => column?.TaskId.includes(task?.id || 0)
+        data?.tasks?.filter((task: TaskProps) =>
+          TaskId.includes(task?.id || "0")
         )
       );
     }
-  }, [column, data]);
+  }, [TaskId, data]);
 
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
@@ -62,7 +60,7 @@ function Columns({ column }: ColumnsProps) {
           mx: "10px",
         }}
       >
-        <Typography>{column?.Title}</Typography>
+        <Typography>{Title}</Typography>
         <IconButton
           aria-label="more"
           id="long-button"

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 export interface TaskProps {
-  id?: number;
+  id?: string;
   description?: string;
 }
 

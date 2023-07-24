@@ -4,8 +4,7 @@ const typeDefs = gql`
   "Type for a task on the Column"
   type Task {
     id: ID!
-    title: String!
-    description: String!
+    Description: String!
   }
   "Column that is displayed on the column"
   type Column {
@@ -28,6 +27,8 @@ const typeDefs = gql`
   type Mutation {
     "Mutation to add a column to Board"
     addColumn(Title: String): Column
+    "Mutation to add a task to a column"
+    addTask(Description: String): Task
   }
 `;
 export default typeDefs;
