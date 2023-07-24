@@ -1,33 +1,71 @@
+// import gql from "graphql-tag";
+
+// const typeDefs = gql`
+//   "Type for a task on the Column"
+//   type Task {
+//     id: ID!
+//     Description: String!
+//   }
+//   "Column that is displayed on the column"
+//   type Column {
+//     id: ID!
+//     Title: String
+//     TaskId: [ID]
+//   }
+
+//   type Query {
+//     "get all the Columns"
+//     Columns: [Column]
+//     "get a single Column"
+//     Column(id: ID!): Column!
+//     "get all tasks"
+//     Tasks: [Task!]
+//     "get single task"
+//     Task(id: ID!): Task!
+//   }
+
+//   type Mutation {
+//     "Mutation to add a column to Board"
+//     addColumn(Title: String): Column
+//     "Mutation to add a task to a column"
+//     addTask(Description: String): Task
+//   }
+// `;
+// export default typeDefs;
+
 import gql from "graphql-tag";
 
 const typeDefs = gql`
   "Type for a task on the Column"
   type Task {
     id: ID!
-    title: String!
-    description: String!
+    Description: String!
+    ColumnId: String!
   }
   "Column that is displayed on the column"
   type Column {
     id: ID!
     Title: String
-    TaskId: [ID]
   }
 
   type Query {
     "get all the Columns"
     Columns: [Column]
     "get a single Column"
-    Column(id: ID!): Column!
+    Column(id: ID!): Column
     "get all tasks"
-    Tasks: [Task!]
+    Tasks: [Task]
     "get single task"
-    Task(id: ID!): Task!
+    Task(id: ID!): Task
   }
 
   type Mutation {
     "Mutation to add a column to Board"
     addColumn(Title: String): Column
+    "Mutation to add a task to a column"
+    addTask(Description: String, ColumnId: String!): Task
+    "Update Column"
+    updateColumn(id: ID!, Title: String, TaskId: [ID]): Column
   }
 `;
 export default typeDefs;

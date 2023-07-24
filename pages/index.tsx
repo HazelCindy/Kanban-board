@@ -2,7 +2,7 @@ import * as React from "react";
 import Head from "next/head";
 import { ApolloProvider } from "@apollo/client";
 import startApolloServer from "../src/api/graphql";
-import Kanban from "./dashboard/kanban";
+import Kanban from "../src/components/kanban";
 import client from "../src/api/hello";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   startApolloServer();
 
   return {

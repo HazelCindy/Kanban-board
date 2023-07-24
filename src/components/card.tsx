@@ -5,34 +5,51 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { gql, useMutation } from "@apollo/client";
-import { BOARD } from "../../pages/dashboard/kanban";
 
 const ADD_COLUMN = gql`
   mutation addColumn($title: String) {
     addColumn(Title: $title) {
-      TaskId
       Title
       id
+    }
+  }
+`;
+const ADD_TASK = gql`
+  mutation addTask($columnId: String!, $description: String) {
+    addTask(ColumnId: $columnId, Description: $description) {
+      id
+      Description
+      ColumnId
     }
   }
 `;
 
 type CardsProps = {
   column?: boolean;
+  columnId?: string;
 };
 
-function Cards({ column }: CardsProps) {
+function Cards({ column, columnId }: CardsProps) {
   const [cardName, setCardName] = React.useState("");
   const [addCard, setAddCard] = React.useState(false);
   const [errorMessage, setError] = React.useState(false);
   // Mutation to add a new column
-  const [addColumn, { data, loading, error }] = useMutation(ADD_COLUMN);
+  const [addColumn] = useMutation(ADD_COLUMN);
 
-  const handleAddColumn = (id: number, name: string) => {
-    if (name !== "" && column) {
-      addColumn({
-        variables: { title: name },
-      });
+  const [addTask] = useMutation(ADD_TASK);
+
+  const handleAdd = (name: string) => {
+    if (name !== "") {
+      if (column) {
+        addColumn({
+          variables: { title: name },
+        });
+      } else {
+        addTask({
+          variables: { columnId, description: name },
+        });
+      }
+      setAddCard(false);
     }
   };
 
@@ -46,10 +63,12 @@ function Cards({ column }: CardsProps) {
           component="form"
         >
           <TextField
-            id={error ? "outlined-error-helper-text" : "outlined-required"}
+            id={
+              errorMessage ? "outlined-error-helper-text" : "outlined-required"
+            }
             label={column ? "Name" : "Title"}
             error={errorMessage}
-            helperText={error ? "Please add title" : ""}
+            helperText={errorMessage ? "Please add title" : ""}
             value={cardName}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setCardName(e.target.value);
@@ -76,8 +95,7 @@ function Cards({ column }: CardsProps) {
                 width: "sm",
               }}
               onClick={() => {
-                column ? handleAddColumn(1, cardName) : "";
-                cardName !== "" && setAddCard(false);
+                handleAdd(cardName);
               }}
             >
               Add

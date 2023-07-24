@@ -1,31 +1,28 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
+import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Cards from "./card";
 import Task, { TaskProps } from "./task";
-import { gql, useQuery } from "@apollo/client";
 
 export const Tasks = gql`
   query {
     Tasks {
       id
-      itle
-      description
+      Description
+      ColumnId
     }
   }
 `;
 
-interface ColumnsProps {
-  column?: {
-    id: number;
-    Title: string;
-    TaskId: number[];
-  };
+export interface ColumnsProps {
+  id?: string;
+  Title: string;
 }
 
-function Columns({ column }: ColumnsProps) {
+function Columns({ id, Title }: ColumnsProps) {
   const [tasks, setTasks] = React.useState<Array<TaskProps>>([]);
   // get tasks in cache
   const { data } = useQuery(Tasks);
@@ -42,13 +39,9 @@ function Columns({ column }: ColumnsProps) {
   React.useEffect(() => {
     if (data?.Tasks) {
       // set the tasks for each indvidual column
-      setTasks(
-        data?.tasks?.filter(
-          (task: TaskProps) => column?.TaskId.includes(task?.id || 0)
-        )
-      );
+      setTasks(data?.Tasks?.filter((task: TaskProps) => task?.ColumnId === id));
     }
-  }, [column, data]);
+  }, [id, data]);
 
   return (
     <Card sx={{ maxWidth: "inherit", backgroundColor: "white" }}>
@@ -62,7 +55,7 @@ function Columns({ column }: ColumnsProps) {
           mx: "10px",
         }}
       >
-        <Typography>{column?.Title}</Typography>
+        <Typography>{Title}</Typography>
         <IconButton
           aria-label="more"
           id="long-button"
@@ -88,16 +81,16 @@ function Columns({ column }: ColumnsProps) {
         </Menu>
       </Box>
 
-      {tasks.length === 0 ? (
-        <Task />
+      {tasks?.length === 0 ? (
+        <Task Description="" />
       ) : (
         //   Display task if availabe
         tasks?.map((task) => (
-          <Task description={task?.description} key={task?.id} />
+          <Task Description={task?.Description} key={task?.id} />
         ))
       )}
 
-      <Cards />
+      <Cards columnId={id} />
     </Card>
   );
 }
