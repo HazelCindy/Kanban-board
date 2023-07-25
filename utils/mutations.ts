@@ -30,8 +30,8 @@ export const CLEAR_TASKS = gql`
 
 // Rename column
 export const UPDATE_COLUMNS = gql`
-  mutation updateColumn($updateColumnId: ID!, $title: String, $taskId: [ID]) {
-    updateColumn(id: $updateColumnId, Title: $title, TaskId: $taskId) {
+  mutation updateColumn($updateColumnId: ID!, $title: String) {
+    updateColumn(id: $updateColumnId, Title: $title) {
       id
       Title
     }

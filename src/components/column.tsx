@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import { useMutation, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import {
+  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -119,20 +120,66 @@ function Columns({ id, Title }: ColumnsProps) {
           display: "flex",
           justifyContent: "space-between",
           width: "95%",
-          height: "60px",
+          height: columnUpdate.rename.edit ? "100px" : "60px",
           alignItems: "center",
           mx: "10px",
         }}
       >
         {columnUpdate.rename.edit ? (
-          <TextField
-            variant="outlined"
-            value={Title}
-            size="small"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              columnUpdate["rename"].name = e.target.value;
+          <Box
+            sx={{
+              display: "block",
             }}
-          />
+          >
+            <TextField
+              variant="outlined"
+              value={Title}
+              size="small"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                columnUpdate["rename"].name = e.target.value;
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <Button
+                onClick={() =>
+                  setColumnUpdate({
+                    ...columnUpdate,
+                    rename: {
+                      edit: false,
+                      name: "",
+                    },
+                  })
+                }
+              >
+                Cancel
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "rgb(100, 112, 205)",
+                  color: "white",
+                  width: "sm",
+                }}
+                onClick={() => {
+                  updateTask({
+                    variables: {
+                      updateColumnId: id,
+                      title: columnUpdate["rename"].name,
+                    },
+                    // refetch the tasks
+                    refetchQueries: [COLUMNS, "Columns"],
+                  });
+                }}
+              >
+                Add
+              </Button>
+            </Box>
+          </Box>
         ) : (
           <Typography>{Title}</Typography>
         )}
