@@ -4,25 +4,8 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import { gql, useMutation } from "@apollo/client";
-
-const ADD_COLUMN = gql`
-  mutation addColumn($title: String) {
-    addColumn(Title: $title) {
-      Title
-      id
-    }
-  }
-`;
-const ADD_TASK = gql`
-  mutation addTask($columnId: String!, $description: String) {
-    addTask(ColumnId: $columnId, Description: $description) {
-      id
-      Description
-      ColumnId
-    }
-  }
-`;
+import { useMutation } from "@apollo/client";
+import { ADD_COLUMN, ADD_TASK, COLUMNS, TASKS } from "../../utils/mutations";
 
 type CardsProps = {
   column?: boolean;
@@ -43,12 +26,16 @@ function Cards({ column, columnId }: CardsProps) {
       if (column) {
         addColumn({
           variables: { title: name },
+          // refetch the columns
+          refetchQueries: [COLUMNS, "Columns"],
         });
       } else {
         addTask({
           variables: { columnId, description: name },
+          refetchQueries: [TASKS, "Tasks"],
         });
       }
+      setCardName("");
       setAddCard(false);
     }
   };

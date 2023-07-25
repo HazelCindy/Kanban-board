@@ -2,7 +2,7 @@ import { ColumnsProps } from "../../components/column";
 import { TaskProps } from "../../components/task";
 
 const Columns: ColumnsProps[] = [];
-const Tasks: TaskProps[] = [];
+let Tasks: TaskProps[] = [];
 
 const resolvers = {
   Query: {
@@ -30,11 +30,22 @@ const resolvers = {
       const updatedColumnIndex = Columns.findIndex((column) => {
         return column.id === id;
       });
-      if (updatedColumnIndex) {
+      if (updatedColumnIndex !== -1) {
         Columns[updatedColumnIndex].Title = Title;
         return Columns[updatedColumnIndex];
       }
       return null;
+    },
+    deleteColumn: (_: any, { id }: ColumnsProps) => {
+      // Get the index of column to be updated
+      const updatedColumnIndex = Columns.findIndex((column) => {
+        return column.id === id;
+      });
+      if (updatedColumnIndex !== -1) {
+        Columns.splice(updatedColumnIndex, 1);
+        return true;
+      }
+      return false;
     },
     addTask: (_: any, { Description, ColumnId }: TaskProps) => {
       // addTask to column
@@ -45,6 +56,38 @@ const resolvers = {
       };
       Tasks.push(newTask);
       return newTask;
+    },
+    updateTask: (_: any, { id, Description, ColumnId }: TaskProps) => {
+      // Get the index of column to be updated
+      const updatedTaskIndex = Tasks.findIndex((task) => {
+        return task.id === id;
+      });
+      if (updatedTaskIndex !== -1) {
+        Tasks[updatedTaskIndex].Description = Description;
+        Tasks[updatedTaskIndex].ColumnId = ColumnId;
+        return Tasks[updatedTaskIndex];
+      }
+      return null;
+    },
+    deleteTask: (_: any, { id }: TaskProps) => {
+      // Get the index of column to be updated
+      const updatedTaskIndex = Tasks.findIndex((task) => {
+        return task.id === id;
+      });
+      if (updatedTaskIndex !== -1) {
+        Tasks.splice(updatedTaskIndex, 1);
+        return true;
+      }
+      return false;
+    },
+    clearColumnTasks: (_: any, { ColumnId }: TaskProps) => {
+      // Get the index of column to be cleared
+
+      if (ColumnId !== "") {
+        Tasks = Tasks.filter(({ ColumnId }) => ColumnId !== ColumnId);
+        return true;
+      }
+      return false;
     },
   },
 };
