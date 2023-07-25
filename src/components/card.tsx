@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { gql, useMutation } from "@apollo/client";
+import { COLUMNS } from "./kanban";
+import { Tasks } from "./column";
 
 const ADD_COLUMN = gql`
   mutation addColumn($title: String) {
@@ -43,10 +45,13 @@ function Cards({ column, columnId }: CardsProps) {
       if (column) {
         addColumn({
           variables: { title: name },
+          // refetch the columns
+          refetchQueries: [COLUMNS, "Columns"],
         });
       } else {
         addTask({
           variables: { columnId, description: name },
+          refetchQueries: [Tasks, "Tasks"],
         });
       }
       setAddCard(false);

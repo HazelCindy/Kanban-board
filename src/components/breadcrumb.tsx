@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 
 function BreadCrumb() {
   // const route = useRouter();
-  const routes: any[] = ["Dashboard", "Kanban"];
+  const routes: string[] = ["Dashboard", "Kanban"];
 
   return (
     <Breadcrumbs>
